@@ -7,7 +7,8 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "rm -rf output && node generate-bitmapfont.js",
+    "clear": "rm -rf output",
+    "start": " node generate-bitmapfont.js",
     "docker:build": "docker rmi bitmapfont;docker build -t bitmapfont .",
     "docker:sh": "docker run --rm -it  -v $(pwd):/app bitmapfont sh"
   },
