@@ -1,4 +1,4 @@
-const SceneGame = require("./SceneGame");
+const ImageSceneGame = require("./ImageSceneGame");
 
 module.exports = {
   type: Phaser.CANVAS,
@@ -11,5 +11,5 @@ module.exports = {
   },
   "render.transparent": true,
   backgroundColor: "rgba(255,110,110,0)",
-  scene: [SceneGame],
+  scene: [ImageSceneGame],
 };
