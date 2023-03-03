@@ -8,6 +8,7 @@ const Jimp = require("jimp");
 const Pixelizer = require("image-pixelizer");
 const { XMLMaker } = require("./XMLMaker");
 const { ImageMaker } = require("./ImageMaker");
+const { FontSource } = require("./FontSource");
 
 class SceneGame extends Phaser.Scene {
   constructor() {
@@ -26,7 +27,6 @@ class SceneGame extends Phaser.Scene {
     await new Promise((resolve) => setTimeout(resolve, 5));
 
     const props = this.game.registry.get("props");
-    const xmlMaker = new XMLMaker();
 
     let textStyle = props.textStyle || {};
     if (!textStyle.fontFamily) textStyle.fontFamily = "Arial";
@@ -41,74 +41,38 @@ class SceneGame extends Phaser.Scene {
 
     let textSet = props.textSet || Phaser.GameObjects.RetroFont.TEXT_SET1;
 
+    //========================================
+
+    const xmlMaker = new XMLMaker();
     xmlMaker.setConfig({
       fontFamily: textStyle.fontFamily,
       fontSize,
       fileName,
     });
 
-    let txt = this.add.text(0, 0, textSet, textStyle);
-    const metrics = txt.getTextMetrics();
-    //make rough estimate of the required canvas width
-    const maxWidth = Math.ceil(Math.sqrt(txt.width * txt.height) / 512) * 512;
-    const rt = this.add.renderTexture(0, 0, maxWidth, 2048);
+    const fontSource = new FontSource(this);
+    fontSource.setConfig({ textStyle, textSet, margin });
+    fontSource.init();
 
-    txt.setText("");
+    const rt = this.add.renderTexture(0, 0, fontSource.maxWidth, 2048);
 
-    //correct fontSize properties for shadow
-    let offsetX = 0;
-    let offsetY = 0;
-    if (!textStyle.metrics && textStyle.shadow) {
-      offsetX = Math.ceil(textStyle.shadow.offsetX) || 0;
-      offsetY = Math.ceil(textStyle.shadow.offsetY) || 0;
-      metrics.fontSize += offsetY;
-      metrics.descent += offsetY;
-      textStyle.metrics = metrics;
-      txt.setStyle(textStyle);
+    let textY = 0;
+    for (const { text, char } of fontSource.iterator()) {
+      xmlMaker.addChar(char);
+      rt.draw(text);
+      textY = text.y;
     }
 
-    for (let i = 0; i < textSet.length; i++) {
-      txt.setText(textSet[i]);
-
-      const displayWidth = txt.displayWidth;
-      const id = txt.text.charCodeAt(0).toString();
-
-      if (txt.x + displayWidth + offsetX > maxWidth) {
-        txt.x = 0;
-        txt.y += metrics.fontSize + margin;
-      }
-      //add space in order to capture shadow correctly
-      txt.setText(`${textSet[i]} `);
-      rt.draw(txt);
-
-      xmlMaker.addChar({
-        id: id,
-        x: txt.x.toString(),
-        y: txt.y.toString(),
-        width: (displayWidth + offsetX).toString(),
-        height: metrics.fontSize.toString(),
-        xoffset: "0",
-        yoffset: "0",
-        xadvance: displayWidth.toString(),
-        page: "0",
-      });
-
-      txt.x += displayWidth + offsetX + margin;
-    }
-    txt.setText("");
-
-    //add common values
-    const baselineY = textStyle.baselineY || 1.4;
     xmlMaker.setConfig({
-      lineHeight: Math.round((metrics.fontSize - metrics.descent) * baselineY).toString(),
-      base: metrics.descent.toString(),
+      lineHeight: fontSource.lineHeight,
+      base: fontSource.base,
     });
 
     xmlMaker.output(path);
 
     //create snapshot
     const img = await new Promise((resolve) => {
-      this.game.renderer.snapshotArea(0, 0, maxWidth, txt.y + metrics.fontSize, resolve);
+      this.game.renderer.snapshotArea(0, 0, fontSource.maxWidth, textY + fontSource.metrics.fontSize, resolve);
     });
 
     // ==== processing the image ====
