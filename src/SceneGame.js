@@ -41,10 +41,6 @@ class SceneGame extends Phaser.Scene {
 
     let textSet = props.textSet || Phaser.GameObjects.RetroFont.TEXT_SET1;
 
-    const compressionOptions = typeof props.compression === "null" ? NULL : props.compression || { quality: [0.3, 0.5] };
-    const maxNumberOfColors = props.maxNumberOfColours;
-    const antialias = props.antialias !== false;
-
     xmlMaker.setConfig({
       fontFamily: textStyle.fontFamily,
       fontSize,
@@ -117,6 +113,9 @@ class SceneGame extends Phaser.Scene {
 
     // ==== processing the image ====
 
+    const compressionOptions = typeof props.compression === "null" ? NULL : props.compression || { quality: [0.3, 0.5] };
+    const maxNumberOfColors = props.maxNumberOfColours;
+    const antialias = props.antialias !== false;
     const imageMaker = new ImageMaker();
     imageMaker.setConfig({
       base64Url: img.src,
