@@ -13,14 +13,33 @@ exports.ImageSource = class ImageSource {
   lineHeight = 0;
   base = 0;
   fontSize = 72;
+  imgs = [];
   /** @param {Phaser.Scene} scene */
   constructor(scene) {
     this.scene = scene;
   }
+
   setConfig(config = {}) {
-    if (config.imgs) this.imgs = config.imgs;
-    // if (config.lineHeight) this.lineHeight = config.lineHeight;
-    // if (config.base) this.base = config.base;
+    // if (config.imgs) this.imgs = config.imgs;
+    if (config.lineHeight) this.lineHeight = config.lineHeight;
+    if (config.base) this.base = config.base;
+    if (config.fontFamily) this.fontFamily = config.fontFamily;
+    if (config.fontSize) this.fontSize = config.fontSize;
+  }
+
+  loadImg(fontDir) {
+    const fontFiles = fs.readdirSync(fontDir);
+    fontFiles.forEach((fontFile) => {
+      const fontPath = nodepath.join(fontDir, fontFile);
+      const fileName = nodepath.basename(fontPath);
+      // const fileNameWithoutExtension = fileName.replace(/\.[^/.]+$/, "");
+
+      const base64 = fs.readFileSync(fontPath, { encoding: "base64" });
+      const base64Url = `data:image/png;base64,${base64}`;
+
+      this.scene.textures.addBase64(fileName[0], base64Url);
+      this.imgs.push({ key: fileName[0] });
+    });
   }
 
   init() {}
@@ -30,6 +49,8 @@ exports.ImageSource = class ImageSource {
     let y = 0;
     let maxHeight = 0;
     let maxWidth = 0;
+    let lineHeight = 0;
+    let base = 0;
 
     for (const { key } of this.imgs) {
       const img = this.scene.add.image(x, y, key).setOrigin(0, 0);
@@ -44,8 +65,8 @@ exports.ImageSource = class ImageSource {
       //add space in order to capture shadow correctly
 
       // rt.draw(txt);
-      this.lineHeight = Math.max(this.lineHeight, img.height);
-      this.base = this.lineHeight;
+      lineHeight = Math.max(this.lineHeight, img.height);
+      base = lineHeight;
 
       maxHeight = Math.max(maxHeight, img.height);
       maxWidth = x + displayWidth + this.offsetX + this.margin;
@@ -67,6 +88,10 @@ exports.ImageSource = class ImageSource {
       x += displayWidth + this.offsetX + this.margin;
       img.destroy();
     }
+
+    this.lineHeight = this.lineHeight || lineHeight;
+    this.base = this.base || base;
+
     this.maxWidth = maxWidth;
     this.maxHeight = maxHeight;
     // const textY = txt.y;

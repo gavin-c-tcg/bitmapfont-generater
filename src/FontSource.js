@@ -13,9 +13,18 @@ exports.FontSource = class FontSource {
     this.scene = scene;
   }
   setConfig(config = {}) {
-    if (config.textStyle) this.textStyle = config.textStyle;
     if (config.textSet) this.textSet = config.textSet;
     if (config.margin) this.margin = config.margin;
+    if (config.textStyle) {
+      let textStyle = config.textStyle || {};
+      if (!textStyle.fontFamily) textStyle.fontFamily = "Arial";
+      if (!textStyle.fontSize) textStyle.fontSize = "20px";
+      // if (!textStyle.testString) textStyle.testString = Phaser.GameObjects.RetroFont.TEXT_SET1;
+
+      this.textStyle = textStyle;
+      this.fontSize = Number(textStyle.fontSize.replace("px", ""));
+      this.fontFamily = textStyle.fontFamily;
+    }
   }
 
   init() {

@@ -23,20 +23,28 @@ class ImageSceneGame extends Phaser.Scene {
   preload() {
     console.log("preload");
 
-    this.imgs = [];
-    const fontDir = "./images/time-number";
-    const fontFiles = fs.readdirSync(fontDir);
-    fontFiles.forEach((fontFile) => {
-      const fontPath = nodepath.join(fontDir, fontFile);
-      const fileName = nodepath.basename(fontPath);
-      const fileNameWithoutExtension = fileName.replace(/\.[^/.]+$/, "");
+    const props = this.game.registry.get("props");
 
-      const base64 = fs.readFileSync(fontPath, { encoding: "base64" });
-      const base64Url = `data:image/png;base64,${base64}`;
+    if (props.textStyle) {
+      this.source = new FontSource(this);
+      this.source.setConfig({
+        textStyle: props.textStyle,
+        textSet: props.textSet || Phaser.GameObjects.RetroFont.TEXT_SET1,
+        margin: typeof props.margin === "number" ? props.margin : 1,
+      });
+    }
 
-      this.textures.addBase64(fileName[0], base64Url);
-      this.imgs.push({ key: fileName[0], fileNameWithoutExtension, fileName, fontPath });
-    });
+    if (props.images) {
+      this.source = new ImageSource(this);
+      this.source.loadImg(props.images.fontDir);
+      this.source.setConfig({
+        fontFamily: props.images.fontFamily || Date.now().toString(),
+        imgs: this.imgs,
+        lineHeight: props.images.lineHeight,
+        base: props.images.base,
+        fontSize: props.fontSize,
+      });
+    }
   }
   async create() {
     //quick and dirty hack to wait for data to be available in the registry
@@ -44,34 +52,16 @@ class ImageSceneGame extends Phaser.Scene {
 
     const props = this.game.registry.get("props");
 
-    let textStyle = props.textStyle || {};
-    if (!textStyle.fontFamily) textStyle.fontFamily = "Arial";
-    if (!textStyle.fontSize) textStyle.fontSize = "20px";
-    if (!textStyle.testString) textStyle.testString = Phaser.GameObjects.RetroFont.TEXT_SET1;
-
-    const fontSize = Number(textStyle.fontSize.replace("px", ""));
-
-    const fileName = props.fileName || `${textStyle.fontFamily}${fontSize}`;
-    const path = props.path || "./";
-    const margin = typeof props.margin === "number" ? props.margin : 1;
-
-    let textSet = props.textSet || Phaser.GameObjects.RetroFont.TEXT_SET1;
+    const fileName = props.fileName || `${Date.now()}`;
+    const path = props.path || "./output";
 
     //========================================
 
-    const source = new ImageSource(this);
-    source.setConfig({
-      imgs: this.imgs,
-      lineHeight: 12,
-      base: 12,
-    });
+    const source = this.source;
+
     source.init();
     const xmlMaker = new XMLMaker();
-    xmlMaker.setConfig({ fontFamily: textStyle.fontFamily, fontSize, fileName });
-
-    // const fontSource = new FontSource(this);
-    // fontSource.setConfig({ textStyle, textSet, margin });
-    // fontSource.init();
+    xmlMaker.setConfig({});
 
     const texture = this.add.renderTexture(0, 0, 2048, 2048);
 
@@ -80,9 +70,13 @@ class ImageSceneGame extends Phaser.Scene {
       texture.draw(text);
     }
 
-    if (source.fontSize) xmlMaker.setConfig({ fontSize: source.fontSize });
-
-    xmlMaker.setConfig({ lineHeight: source.lineHeight, base: source.base });
+    xmlMaker.setConfig({
+      fontSize: source.fontSize,
+      fontFamily: source.fontFamily,
+      fileName,
+      lineHeight: source.lineHeight,
+      base: source.base,
+    });
 
     xmlMaker.output(path);
 
