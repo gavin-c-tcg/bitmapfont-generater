@@ -44,35 +44,26 @@ class SceneGame extends Phaser.Scene {
     //========================================
 
     const xmlMaker = new XMLMaker();
-    xmlMaker.setConfig({
-      fontFamily: textStyle.fontFamily,
-      fontSize,
-      fileName,
-    });
+    xmlMaker.setConfig({ fontFamily: textStyle.fontFamily, fontSize, fileName });
 
     const fontSource = new FontSource(this);
     fontSource.setConfig({ textStyle, textSet, margin });
     fontSource.init();
 
-    const rt = this.add.renderTexture(0, 0, fontSource.maxWidth, 2048);
+    const texture = this.add.renderTexture(0, 0, fontSource.maxWidth, 2048);
 
-    let textY = 0;
     for (const { text, char } of fontSource.iterator()) {
       xmlMaker.addChar(char);
-      rt.draw(text);
-      textY = text.y;
+      texture.draw(text);
     }
 
-    xmlMaker.setConfig({
-      lineHeight: fontSource.lineHeight,
-      base: fontSource.base,
-    });
+    xmlMaker.setConfig({ lineHeight: fontSource.lineHeight, base: fontSource.base });
 
     xmlMaker.output(path);
 
     //create snapshot
     const img = await new Promise((resolve) => {
-      this.game.renderer.snapshotArea(0, 0, fontSource.maxWidth, textY + fontSource.metrics.fontSize, resolve);
+      this.game.renderer.snapshotArea(0, 0, fontSource.maxWidth, fontSource.maxHeight, resolve);
     });
 
     // ==== processing the image ====

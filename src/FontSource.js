@@ -95,6 +95,7 @@ exports.FontSource = class FontSource {
       txt.x += displayWidth + this.offsetX + this.margin;
     }
 
+    this.maxHeight = txt.y + this.metrics.fontSize;
     // const textY = txt.y;
     txt.setText("");
     txt.destroy();
