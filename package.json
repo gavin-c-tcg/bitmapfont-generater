@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "test": "jest"
+    "start": "rm -rf output && node generate-bitmapfont.js"
   },
   "devDependencies": {
     "image-size": "^0.8.3",

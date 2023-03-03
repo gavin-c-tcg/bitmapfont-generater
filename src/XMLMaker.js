@@ -51,7 +51,7 @@ exports.XMLMaker = class XMLMaker {
     const xml = convert.json2xml(this.getTempJson(), {
       compact: true,
       ignoreComment: true,
-      spaces: 4,
+      // spaces: 4,
     });
     return xml;
   }

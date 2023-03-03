@@ -34,5 +34,5 @@ const generator = require("./src/index");
     }
   }
 
-  process.exit(1);
+  process.exit(0);
 })();
