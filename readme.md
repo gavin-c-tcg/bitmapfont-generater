@@ -1,5 +1,7 @@
 # Phaser bitmap font generator
 
+用於產生 Phaser bitmapfont
+
 ## start
 
 ```bash
@@ -11,11 +13,21 @@
 
 - 安裝失敗 https://github.com/Automattic/node-canvas/issues/1065
 
-### Windows or Docker
+### Mac, Linux (Docker)
 
 ```bash
 	yarn docker:build
 	yarn docker:sh ## 進入 docker
+	yarn install
+	yarn start
+```
+
+### Windows Git Bash (Docker)
+
+```bash
+	docker rmi bitmapfont
+	docker build -t bitmapfont .
+	docker run --rm -it  -v $(pwd -W)://app bitmapfont sh
 	yarn install
 	yarn start
 ```
