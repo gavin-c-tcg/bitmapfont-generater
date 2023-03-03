@@ -72,7 +72,7 @@ exports.ImageMaker = class ImageMaker {
     }
 
     // check path dir exists and create if not
-    if (!fs.existsSync(path)) fs.mkdirSync(path);
+    if (!fs.existsSync(path)) fs.mkdirSync(path, { recursive: true });
 
     fse.writeFileSync(nodepath.join(path, `${this.fileName}.png`), buffer);
   }

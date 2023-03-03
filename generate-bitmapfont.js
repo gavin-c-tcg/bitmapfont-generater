@@ -27,7 +27,7 @@ const generator = require("./src/index");
       //metrics berekenen
 
       await generator.TextStyle2BitmapFont({
-        path: "./output",
+        path: "./output/Roboto-ThinItalic",
         fileName: `BBwit${fontSize}@${resolution}x`,
         textStyle,
       });

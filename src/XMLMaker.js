@@ -58,7 +58,7 @@ exports.XMLMaker = class XMLMaker {
 
   output(path) {
     // check path dir exists and create if not
-    if (!fs.existsSync(path)) fs.mkdirSync(path);
+    if (!fs.existsSync(path)) fs.mkdirSync(path, { recursive: true });
 
     // write xml file
     fse.writeFileSync(nodepath.join(path, `${this.fileName}.xml`), this.getXML());
