@@ -13,7 +13,9 @@
 
 ## 安裝
 
-- 安裝失敗 https://github.com/Automattic/node-canvas/issues/1065
+- 安裝失敗參考資訊
+  https://github.com/Automattic/node-canvas/issues/1065
+  https://github.com/Automattic/node-canvas/issues/348
 
 ### Mac, Linux (Docker)
 
