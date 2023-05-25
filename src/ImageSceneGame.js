@@ -31,6 +31,7 @@ class ImageSceneGame extends Phaser.Scene {
         textStyle: props.textStyle,
         textSet: props.textSet || Phaser.GameObjects.RetroFont.TEXT_SET1,
         margin: typeof props.margin === "number" ? props.margin : 1,
+        textSetDetail: props.textSetDetail || undefined,
       });
     }
 

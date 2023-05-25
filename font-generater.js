@@ -6,7 +6,14 @@ exports.genRobotoThinItalic = async () => {
   await generator.TextStyle2BitmapFont({
     path: "./output/Roboto-ThinItalic",
     fileName: `BBwit`,
-    textSet: Phaser.GameObjects.RetroFont.TEXT_SET1,
+    textSet: Phaser.GameObjects.RetroFont.TEXT_SET1 + "ƠơƯư",
+    textSetDetail: {
+      Ơ: { addWidth: 15 },
+      ơ: { addWidth: 15 },
+      Ư: { addWidth: 15 },
+      ư: { addWidth: 15 },
+    },
+    margin: 20,
     textStyle: {
       fontFamily: "Roboto-ThinItalic",
       fontSize: `${resolution * fontSize}px`,

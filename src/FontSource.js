@@ -13,6 +13,7 @@ exports.FontSource = class FontSource {
     this.scene = scene;
   }
   setConfig(config = {}) {
+    if (config.textSetDetail) this.textSetDetail = config.textSetDetail;
     if (config.textSet) this.textSet = config.textSet;
     if (config.margin) this.margin = config.margin;
     if (config.textStyle) {
@@ -76,6 +77,7 @@ exports.FontSource = class FontSource {
       txt.setText(this.textSet[i]);
 
       const displayWidth = txt.displayWidth;
+      let marginValue = 0;
       const id = txt.text.charCodeAt(0).toString();
 
       if (txt.x + displayWidth + this.offsetX > this.maxWidth) {
@@ -85,14 +87,16 @@ exports.FontSource = class FontSource {
       //add space in order to capture shadow correctly
       txt.setText(`${this.textSet[i]} `);
       // rt.draw(txt);
-
+      if (this.textSetDetail[this.textSet[i]]) {
+        marginValue = this.textSetDetail[this.textSet[i]].addWidth;
+      }
       yield {
         text: txt,
         char: {
           id: id,
           x: txt.x.toString(),
           y: txt.y.toString(),
-          width: (displayWidth + this.offsetX).toString(),
+          width: (displayWidth + this.offsetX + marginValue).toString(),
           height: this.metrics.fontSize.toString(),
           xoffset: "0",
           yoffset: "0",
