@@ -29,8 +29,10 @@ exports.FontSource = class FontSource {
   }
 
   init() {
+    // console.log("init");
     this.initMetricsInfo();
     this.initShadowOffect();
+    this.initAscentDescent();
     const baselineY = this.textStyle.baselineY || 1.4;
     this.lineHeight = Math.round((this.metrics.fontSize - this.metrics.descent) * baselineY).toString();
     this.base = this.metrics.descent.toString();
@@ -67,10 +69,34 @@ exports.FontSource = class FontSource {
     this.offsetY = offsetY;
   }
 
+  initAscentDescent() {
+    const addAscent = Math.ceil(this.textStyle.addAscent) || 0;
+    const addDescent = Math.ceil(this.textStyle.addDescent) || 0;
+    this.metrics.fontSize += addAscent;
+    this.metrics.ascent += addAscent;
+    this.metrics.descent += addDescent;
+    this.metrics.fontSize += addAscent + addDescent;
+    this.metrics.ascent += addAscent;
+  }
+
   *iterator() {
     const txt = this.scene.make
-      .text({ x: 0, y: 0 }, false)
-      .setStyle(this.textStyle || {})
+      .text(
+        {
+          x: 0,
+          y: 0,
+          style: {
+            ...this.textStyle,
+            metrics: {
+              descent: this.metrics.descent,
+              fontSize: this.metrics.fontSize,
+              ascent: this.metrics.ascent,
+            },
+          },
+        },
+        false
+      )
+      // .setStyle(this.textStyle || {})
       .setText(this.textSet || Phaser.GameObjects.RetroFont.TEXT_SET1);
 
     for (let i = 0; i < this.textSet.length; i++) {

@@ -4,9 +4,14 @@ exports.genRobotoThinItalic = async () => {
   let resolution = 4;
   let fontSize = 28;
   await generator.TextStyle2BitmapFont({
-    path: "./output/Roboto-ThinItalic",
-    fileName: `BBwit`,
-    textSet: Phaser.GameObjects.RetroFont.TEXT_SET1 + "ƠơƯư",
+    path: "./output/Roboto-Black",
+    fileName: `Roboto-Black`,
+    textSet:
+      Phaser.GameObjects.RetroFont.TEXT_SET1 +
+      "iíìỉĩịuúùủũụưứừửữựyýỳỷỹỵoóòỏõọôốồổỗộơớờởỡợaáàảãạeéè" +
+      "ẻẽẹêếềểễệăắằẳẵặâấầẩẫậIÍÌỈĨỊUÚÙỦŨỤƯỨỪỬỮỰYÝỲỶỸỴOÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢAÁÀ" +
+      "ẢÃẠEÉÈẺẼẸÊẾỀỂỄỆĂẮẰẲẴẶÂẤẦẨẪẬỖỖỖỖỖỖ" +
+      "ỖỖỀẮẲẴỂỄỖỖỖỐỒỔỖẤẦẨẪẾỖỖỖ",
     textSetDetail: {
       Ơ: { addWidth: 15 },
       ơ: { addWidth: 15 },
@@ -15,20 +20,22 @@ exports.genRobotoThinItalic = async () => {
     },
     margin: 20,
     textStyle: {
-      fontFamily: "Roboto-ThinItalic",
+      addAscent: 8,
+      addDescent: 0,
+      fontFamily: "Roboto-Black",
       fontSize: `${resolution * fontSize}px`,
       align: "center",
-      stroke: "#000",
-      strokeThickness: resolution,
+      // stroke: "#000",
+      // strokeThickness: resolution,
       color: "#ffffff",
-      shadow: {
-        offsetX: 0.5 * resolution,
-        offsetY: 0.5 * resolution,
-        blur: 0,
-        fill: true,
-        stroke: true,
-        color: "#000000",
-      },
+      // shadow: {
+      //   offsetX: 0.5 * resolution,
+      //   offsetY: 0.5 * resolution,
+      //   blur: 0,
+      //   fill: true,
+      //   stroke: true,
+      //   color: "#000000",
+      // },
     },
   });
 };
