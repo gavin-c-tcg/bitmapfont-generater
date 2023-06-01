@@ -8,6 +8,9 @@ const Jimp = require("jimp");
 const Pixelizer = require("image-pixelizer");
 
 exports.FontSource = class FontSource {
+  xOffsetPercent = 0;
+  yOffsetPercent = 0;
+
   /** @param {Phaser.Scene} scene */
   constructor(scene) {
     this.scene = scene;
@@ -26,8 +29,8 @@ exports.FontSource = class FontSource {
       this.fontSize = Number(textStyle.fontSize.replace("px", ""));
       this.fontFamily = textStyle.fontFamily;
     }
-    if (config.xOffsetPercent) this.xOffsetPercent = config.xOffsetPercent;
-    if (config.yOffsetPercent) this.yOffsetPercent = config.yOffsetPercent;
+    if (config.xOffsetPercent) this.xOffsetPercent = config.xOffsetPercent || 0;
+    if (config.yOffsetPercent) this.yOffsetPercent = config.yOffsetPercent || 0;
   }
 
   init() {
