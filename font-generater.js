@@ -22,6 +22,9 @@ exports.genRobotoThinItalic = async () => {
     textStyle: {
       addAscent: 8,
       addDescent: 0,
+      xOffsetPercent: 0,
+      yOffsetPercent: -0.2,
+
       fontFamily: "Roboto-Black",
       fontSize: `${resolution * fontSize}px`,
       align: "center",

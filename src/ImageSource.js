@@ -13,6 +13,8 @@ exports.ImageSource = class ImageSource {
   lineHeight = 0;
   base = 0;
   fontSize = 72;
+  xOffsetPercent = 0;
+  yOffsetPercent = 0;
   imgs = [];
   /** @param {Phaser.Scene} scene */
   constructor(scene) {
@@ -25,6 +27,8 @@ exports.ImageSource = class ImageSource {
     if (config.base) this.base = config.base;
     if (config.fontFamily) this.fontFamily = config.fontFamily;
     if (config.fontSize) this.fontSize = config.fontSize;
+    if (config.xOffsetPercent) this.xOffsetPercent = config.xOffsetPercent;
+    if (config.yOffsetPercent) this.yOffsetPercent = config.yOffsetPercent;
   }
 
   loadImg(fontDir) {
@@ -52,6 +56,8 @@ exports.ImageSource = class ImageSource {
     let lineHeight = 0;
     let base = 0;
 
+    // console.log(this.xOffsetPercent, this.yOffsetPercent);
+
     for (const { key } of this.imgs) {
       const img = this.scene.add.image(x, y, key).setOrigin(0, 0);
 
@@ -78,8 +84,8 @@ exports.ImageSource = class ImageSource {
           y: img.y.toString(),
           width: (displayWidth + this.offsetX).toString(),
           height: img.height.toString(),
-          xoffset: "0",
-          yoffset: "0",
+          xoffset: ((displayWidth + this.offsetX) * this.xOffsetPercent).toString(),
+          yoffset: (img.height * this.yOffsetPercent).toString(),
           xadvance: displayWidth.toString(),
           page: "0",
         },

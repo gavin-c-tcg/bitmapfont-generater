@@ -32,6 +32,8 @@ class ImageSceneGame extends Phaser.Scene {
         textSet: props.textSet || Phaser.GameObjects.RetroFont.TEXT_SET1,
         margin: typeof props.margin === "number" ? props.margin : 1,
         textSetDetail: props.textSetDetail || undefined,
+        xOffsetPercent: props.textStyle.xOffsetPercent || 0,
+        yOffsetPercent: props.textStyle.yOffsetPercent || 0,
       });
     }
 
@@ -44,6 +46,8 @@ class ImageSceneGame extends Phaser.Scene {
         lineHeight: props.images.lineHeight,
         base: props.images.base,
         fontSize: props.fontSize,
+        xOffsetPercent: props.textStyle.xOffsetPercent || 0,
+        yOffsetPercent: props.textStyle.yOffsetPercent || 0,
       });
     }
   }

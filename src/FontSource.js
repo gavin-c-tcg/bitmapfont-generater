@@ -26,6 +26,8 @@ exports.FontSource = class FontSource {
       this.fontSize = Number(textStyle.fontSize.replace("px", ""));
       this.fontFamily = textStyle.fontFamily;
     }
+    if (config.xOffsetPercent) this.xOffsetPercent = config.xOffsetPercent;
+    if (config.yOffsetPercent) this.yOffsetPercent = config.yOffsetPercent;
   }
 
   init() {
@@ -124,8 +126,8 @@ exports.FontSource = class FontSource {
           y: txt.y.toString(),
           width: (displayWidth + this.offsetX + marginValue).toString(),
           height: this.metrics.fontSize.toString(),
-          xoffset: "0",
-          yoffset: "0",
+          xoffset: ((displayWidth + this.offsetX + marginValue) * this.xOffsetPercent).toString(),
+          yoffset: (this.metrics.fontSize * this.yOffsetPercent).toString(),
           xadvance: displayWidth.toString(),
           page: "0",
         },
