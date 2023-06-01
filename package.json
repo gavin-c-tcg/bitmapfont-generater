@@ -10,7 +10,8 @@
     "clear": "rm -rf output",
     "start": " node generate-bitmapfont.js",
     "docker:build": "docker rmi bitmapfont;docker build -t bitmapfont .",
-    "docker:sh": "docker run --rm -it  -v $(pwd):/app bitmapfont sh"
+    "docker:sh": "docker run --rm -it  -v $(pwd):/app bitmapfont sh",
+    "docker:windows:git-bash": "docker run --rm -it  -v $(pwd -W)://app bitmapfont sh"
   },
   "devDependencies": {
     "image-size": "^0.8.3",
