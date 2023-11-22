@@ -2,8 +2,8 @@ const ImageSceneGame = require("./ImageSceneGame");
 
 module.exports = {
   type: Phaser.CANVAS,
-  width: 2048,
-  height: 2048,
+  width: 1024 * 3,
+  height: 1024 * 3,
   autoFocus: false,
   banner: false,
   render: {

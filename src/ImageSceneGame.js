@@ -68,7 +68,7 @@ class ImageSceneGame extends Phaser.Scene {
     const xmlMaker = new XMLMaker();
     xmlMaker.setConfig({});
 
-    const texture = this.add.renderTexture(0, 0, 2048, 2048);
+    const texture = this.add.renderTexture(0, 0, 1024 * 3, 1024 * 3);
 
     for (const { text, char } of source.iterator()) {
       xmlMaker.addChar(char);
